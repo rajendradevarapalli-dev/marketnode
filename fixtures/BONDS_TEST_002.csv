@@ -1,0 +1,2 @@
+isin,issuerName,bondName,currency,faceValue,couponRate,maturityDate,totalSize,bookOpenDate,bookCloseDate
+MYBND2699002,Clean Test Issuer,Clean Test Bond,MYR,1000.00,0.0005,2026-08-15,50000,2026-07-22,2026-07-23
