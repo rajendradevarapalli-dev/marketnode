@@ -1,0 +1,2 @@
+isin,issuerName,bondName,currency,faceValue,couponRate,maturityDate,totalSize,bookOpenDate,bookCloseDate
+MYBND2600004,Delta Corp,DELTA 2026 Notes,MYR,2000,0.0003,12/06/2026,300000,08/05/2026,15/05/2026
