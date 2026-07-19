@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 async function getBusinessDate(apiContext) {
   const res = await apiContext.get('/api/system/date');
   const body = await res.json();
@@ -9,15 +12,17 @@ async function advanceDate(apiContext) {
   return res.json();
 }
 
-async function uploadBondFile(apiContext, csvContent, fileName) {
-  // Bonds are created via SFTP file drop in this environment.
-  // In CI/local, the test suite writes directly to the mounted sftp/upload/bonds folder.
-  const fs = require('fs');
-  const path = require('path');
+async function uploadBondFile(apiContext, csvContent, fileName, isin, maxRetries = 15) {
   const uploadDir = path.join(__dirname, '..', '..', 'sftp', 'upload', 'bonds');
   fs.writeFileSync(path.join(uploadDir, fileName), csvContent);
-  // small delay to allow backend to pick up the file
-  await new Promise(r => setTimeout(r, 2000));
+
+  for (let i = 0; i < maxRetries; i++) {
+    await new Promise(r => setTimeout(r, 1000));
+    const bonds = await getBonds(apiContext);
+    const found = bonds.find(b => b.isin === isin);
+    if (found) return found;
+  }
+  return null;
 }
 
 async function subscribe(apiContext, bondId, userId, quantity) {

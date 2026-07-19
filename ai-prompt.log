@@ -1,0 +1,18 @@
+[2026-07-19] [Claude - Anthropic]
+Used throughout this assignment to assist with:
+- Understanding assignment requirements and validating my interpretation against PRODUCT.md and TASKS.md
+- Setting up the local development environment (Docker Desktop, WSL2 troubleshooting on an older Windows laptop)
+- Pivoting to GitHub Codespaces after local environment issues, and setting up Docker within it
+- Manually exploring the bond lifecycle via Swagger UI and curl (system date, bond creation via SFTP, subscriptions, allocation, coupons, maturity)
+- Identifying, verifying, and documenting 4 defects with reproduction steps:
+  - DEF-001: duplicate subscriptions allowed for the same investor on the same bond
+  - DEF-002: proportional allocation rounds up instead of down, causing over-allocation beyond totalSize
+  - DEF-003: coupon payments made on weekends (no business-day check)
+  - DEF-004: maturity processed on the maturity date even when it falls on a weekend
+- Drafting test-plan.md and test-cases.md based on manual exploration findings
+- Setting up a Playwright + Cucumber automated test project structure (features, step-definitions, support, utils)
+- Writing automated test scenarios covering allocation (happy path and oversubscription), duplicate subscription, weekend coupon handling, and weekend maturity handling
+- Debugging test timing issues (SFTP file pickup polling, Cucumber step timeout) and QEMU architecture emulation issues in Docker
+- Writing run-tests.sh and README.md
+
+All API calls, verification of results, and defect confirmation were performed and reviewed by me directly against the running system before being logged.
