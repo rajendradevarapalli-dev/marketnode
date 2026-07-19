@@ -32,7 +32,7 @@ Checks the backend is reachable, runs the full Cucumber suite, generates reports
 
 4 scenarios are expected to fail — they encode documented correct behavior and demonstrate 4 confirmed defects (see `defects.md`):
 - DEF-001 — duplicate subscriptions allowed
-- DEF-002 — allocation over-allocates beyond total size
+- DEF-002 — allocation over-allo`   cates beyond total size
 - DEF-003 — coupon paid on weekends
 - DEF-004 — maturity processed on weekend date
 
