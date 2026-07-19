@@ -1,0 +1,2 @@
+isin,issuerName,bondName,currency,faceValue,couponRate,maturityDate,totalSize,bookOpenDate,bookCloseDate
+MYBND2699004,Weekend Maturity Issuer,Weekend Maturity Bond,MYR,1000.00,0.0005,2026-08-01,50000,2026-07-30,2026-07-31

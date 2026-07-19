@@ -75,3 +75,26 @@ Every allocated value is exactly 1 unit higher than the floor formula specifies 
 **Impact — critical:** The system pays a full day's coupon on every `advance-date` call regardless of day-of-week, with no weekend check applied at all. This directly overpays investors — in this isolated 4-day window alone, 20,000 was paid in excess (2 weekend days × 10,000) that should not have been paid at all under the documented rules. Over a full bond lifecycle, this compounds significantly and materially misstates amounts owed to investors.
 
 **Note:** This also means the "rollover to next business day" behavior (confirmed understanding: weekend interest should be skipped and added to the next working day's credit) is not implemented — weekend days are being paid directly rather than skipped and deferred.
+
+
+
+
+## DEF-004: Maturity processed on weekend date instead of shifting to next business day
+
+**Severity:** High
+**Spec reference:** PRODUCT.md Section 9 — "Maturity date must be a business day. If it falls on weekend, payment is on next business day."
+
+**Steps to reproduce:**
+1. Create a bond with `maturityDate = 2026-08-01` (a Saturday), `bookOpenDate = 2026-07-30`, `bookCloseDate = 2026-07-31`.
+2. Subscribe a single investor (INV-002, quantity 25000, full allocation, no oversubscription — clean isolated test).
+3. Advance business date via repeated `POST /api/system/advance-date` calls up to and including `2026-08-01`.
+4. Check `GET /api/v1/bonds/{id}` and `GET /api/v1/portfolio/maturities`.
+
+**Expected:** Since `2026-08-01` is a Saturday, maturity processing (final coupon + principal repayment + status → MATURED) should be deferred to the next business day, `2026-08-03` (Monday).
+
+**Actual:**
+- Bond status flipped directly to `MATURED` as soon as business date reached `2026-08-01` (the Saturday itself).
+- `GET /api/v1/portfolio/coupons` shows a coupon payment dated `2026-08-01` (Saturday), amount 12,500.
+- `GET /api/v1/portfolio/maturities` shows: `{"bond_id":7,"bond_name":"Weekend Maturity Bond","maturity_date":"2026-08-01","principal_amount":2.5E7,"status":"PAID"}` — principal paid on the Saturday itself, not shifted to Monday `2026-08-03`.
+
+**Impact:** Directly violates the documented business-day rule for maturity. Combined with DEF-003, this confirms the system has no weekend/business-day awareness anywhere in its date-advancement or payment-processing logic — it appears to treat every calendar day as a valid processing day regardless of type. This is likely the same root cause underlying both DEF-003 and DEF-004.
