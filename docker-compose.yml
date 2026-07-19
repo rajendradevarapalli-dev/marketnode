@@ -13,7 +13,7 @@ services:
     image: atmoz/sftp
     command: bonduser:bondpass:1001:100:upload/bonds
     ports:
-      - "2222:22"
+      - "2223:22"
     volumes:
       - ./sftp/upload:/home/bonduser/upload
 

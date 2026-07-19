@@ -1,0 +1,2 @@
+isin,issuerName,bondName,currency,faceValue,couponRate,maturityDate,totalSize,bookOpenDate,bookCloseDate
+MYBND2699001,Test Issuer One,Test Bond Alpha,MYR,1000.00,0.0005,2026-08-10,100000,2026-07-19,2026-07-21
